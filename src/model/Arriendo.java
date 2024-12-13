@@ -12,13 +12,18 @@ public class Arriendo {
     private double montoTotal;
     private List<CuotaArriendo> cuotas;
 
-    public Arriendo(Cliente cliente, Vehiculo vehiculo, Date fechaArriendo, int dias, double montoTotal) {
+    public Arriendo(Cliente cliente, Vehiculo vehiculo, Date fechaArriendo, int dias, double montoTotal, int numCuotas) {
         this.cliente = cliente;
         this.vehiculo = vehiculo;
         this.fechaArriendo = fechaArriendo;
         this.dias = dias;
         this.montoTotal = montoTotal;
         this.cuotas = new ArrayList<>();
+        for (int i = 0; i < numCuotas; i++) {
+            int valorCuota = (int) Math.ceil(montoTotal / numCuotas);
+            CuotaArriendo cuota = new CuotaArriendo(i + 1, valorCuota);
+            cuotas.add(cuota);
+        }
     }
 
     public Cliente getCliente() {
@@ -43,10 +48,6 @@ public class Arriendo {
 
     public List<CuotaArriendo> getCuotas() {
         return cuotas;
-    }
-
-    public void agregarCuota(CuotaArriendo cuota) {
-        cuotas.add(cuota);
     }
 
     @Override

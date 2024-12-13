@@ -1,12 +1,13 @@
 package view;
 
 import model.Arriendo;
+import view.Components.ComboBoxItem;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class PagarCuotasView extends JFrame {
-    private JComboBox<String> cmbClientes;
+    private JComboBox<ComboBoxItem> cmbClientes;
     private JList<Arriendo> lstArriendos; // Asegúrate de que el JList es de tipo Arriendo
     private JTable tblCuotas;
     private JButton btnMostrarPagos;
@@ -27,14 +28,19 @@ public class PagarCuotasView extends JFrame {
         // Componentes
         JLabel lblClientes = new JLabel("Cliente:");
         cmbClientes = new JComboBox<>();
+
         JLabel lblArriendos = new JLabel("Arriendos:");
-        lstArriendos = new JList<>(new DefaultListModel<>()); // JList con DefaultListModel
+        lstArriendos = new JList<>(new DefaultListModel<>());
+        lstArriendos.setVisibleRowCount(10);
+
         JLabel lblCuotas = new JLabel("Pagos:");
         tblCuotas = new JTable();
         btnMostrarPagos = new JButton("Mostrar Pagos");
         btnRealizarPago = new JButton("Realizar Pago");
 
         JScrollPane scrollArriendos = new JScrollPane(lstArriendos);
+        scrollArriendos.setPreferredSize(new Dimension(400, 600));
+
         JScrollPane scrollCuotas = new JScrollPane(tblCuotas);
 
         layout.setHorizontalGroup(
@@ -71,7 +77,7 @@ public class PagarCuotasView extends JFrame {
         add(panel, BorderLayout.CENTER);
     }
 
-    public JComboBox<String> getCmbClientes() {
+    public JComboBox<ComboBoxItem> getCmbClientes() {
         return cmbClientes;
     }
 

@@ -7,7 +7,10 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
+
+import java.util.Date;
 import java.util.Objects;
+import java.text.SimpleDateFormat;
 
 import view.ArriendoCuotaView;
 import view.ClienteView;
@@ -16,6 +19,8 @@ import view.Components.ComboBoxItem;
 
 import model.Data;
 import model.Vehiculo;
+import model.Arriendo;
+import model.Cliente;
 
 
 public class ArriendoCuotaController {
@@ -113,22 +118,78 @@ public class ArriendoCuotaController {
         String diasTexto = view.getTxtDias().getText();
         String cuotasTexto = view.getTxtCantidadCuotas().getText();
         String montoTexto = view.getTxtMontoTotal().getText();
+        String fechaTexto = view.getTxtFechaArriendo().getText();
 
         // Validar que todos los campos estén completos
-        if (Objects.equals(cedulaCliente, null) 
-            || Objects.equals(patenteVehiculo, null) 
-            || diasTexto.isEmpty() 
-            || cuotasTexto.isEmpty() 
-            || montoTexto.isEmpty()) {
-            // Mostrar mensaje de error
-            JOptionPane.showMessageDialog(view, "Complete todos los campos.");
+        // if (Objects.equals(cedulaCliente, null) 
+        //     || Objects.equals(patenteVehiculo, null) 
+        //     || diasTexto.isEmpty() 
+        //     || cuotasTexto.isEmpty() 
+        //     || montoTexto.isEmpty()
+        //     || fechaTexto.isEmpty()) {
+        //     // Mostrar mensaje de error
+        //     JOptionPane.showMessageDialog(view, "Complete todos los campos.");
+        //     return;
+        // }
+
+        int dias;
+        int numCuotas;
+        int monto;
+        Date fecha;
+
+        try {
+            dias = Integer.parseInt(diasTexto);
+            numCuotas = Integer.parseInt(cuotasTexto);
+            monto = Integer.parseInt(montoTexto);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Ingrese valores numéricos en días, cuotas y monto.");
             return;
         }
 
-        System.out.println("Cliente: " + cedulaCliente);
-        System.out.println("Vehículo: " + patenteVehiculo);
-        System.out.println("Monto Total: " + montoTexto);
-        System.out.println("Cantidad de Cuotas: " + cuotasTexto);
+        try {
+            // convertir a fecha el string ingresado
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            fecha = sdf.parse(fechaTexto);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Ingrese fecha en formato dd/MM/yyyy.");
+            return;
+        }
+        
+        // encontrar cliente por cedula
+        Cliente cliente = Data.clientes.stream()
+            .filter(c -> c.getCedula().equals(cedulaCliente))
+            .findFirst()
+            .orElse(null);
+        
+        // encontrar vehiculo por patente
+        Vehiculo vehiculo = Data.vehiculos.stream()
+            .filter(v -> v.getPatente().equals(patenteVehiculo))
+            .findFirst()
+            .orElse(null);
+
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(view, "Cliente no encontrado.");
+            return;
+        }
+
+        if (cliente.isVigente() == false) {
+            JOptionPane.showMessageDialog(view, "Cliente no vigente.");
+            return;
+        }
+
+        if (vehiculo == null) {
+            JOptionPane.showMessageDialog(view, "Vehículo no encontrado.");
+            return;
+        }
+
+        if (vehiculo.getCondicion() == 'A') {
+            JOptionPane.showMessageDialog(view, "Vehículo no disponible.");
+            return;
+        }
+
+        // crear arriendo
+        Arriendo arriendo = new Arriendo(cliente, vehiculo, fecha, dias, monto, numCuotas);
+        Data.arriendos.add(arriendo);
 
         // Avanzar a la interfaz PagarCuotasView
         view.setVisible(false);

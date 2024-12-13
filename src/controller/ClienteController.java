@@ -3,6 +3,7 @@ package controller;
 import model.Cliente;
 import model.Data;
 import view.ClienteView;
+import view.PagarCuotasView;
 import view.Components.ComboBoxItem;
 import view.ArriendoCuotaView;
 
@@ -14,10 +15,12 @@ import javax.swing.JOptionPane;
 public class ClienteController {
     private ClienteView view;
     private ArriendoCuotaView arriendoCuotaView;
+    private PagarCuotasView pagarCuotasView;
 
-    public ClienteController(ClienteView view, ArriendoCuotaView arriendoCuotaView) {
+    public ClienteController(ClienteView view, ArriendoCuotaView arriendoCuotaView, PagarCuotasView pagarCuotasView) {
         this.view = view;
         this.arriendoCuotaView = arriendoCuotaView;
+        this.pagarCuotasView = pagarCuotasView;
         initController();
     }
 
@@ -40,10 +43,10 @@ public class ClienteController {
             return;
         }
 
-        if (!isCedulaValid(cedula)) {
-            JOptionPane.showMessageDialog(view, "La cédula ingresada no es válida");
-            return;
-        }
+        // if (!isCedulaValid(cedula)) {
+        //     JOptionPane.showMessageDialog(view, "La cédula ingresada no es válida");
+        //     return;
+        // }
 
         // Crear cliente y añadirlo a la lista de clientes
         Cliente cliente = new Cliente(cedula, nombre, vigente);
@@ -53,10 +56,12 @@ public class ClienteController {
         JOptionPane.showMessageDialog(view, "Cliente agregado exitosamente");
         limpiarCampos();
 
-        // Añadir cliente al JComboBox en ArriendoCuotaView
+        // Añadir cliente al JComboBox en ArriendoCuotaView y en PagarCuotasView
         String vigencia = cliente.isVigente() ? "" : " (No Vigente)";
         String displayValue = cliente.getNombre() + vigencia;
         arriendoCuotaView.getCmbClientes().addItem(new ComboBoxItem(displayValue, cedula));
+        pagarCuotasView.getCmbClientes().addItem(new ComboBoxItem(displayValue, cedula));
+
 
         // Cerrar ClienteView y abrir ArriendoCuotaView
         view.setVisible(false);

@@ -17,7 +17,7 @@ public class Main {
         PagarCuotasView pagarCuotasView = new PagarCuotasView();
         
         // Crear controladores
-        new ClienteController(clienteView, arriendoCuotaView);
+        new ClienteController(clienteView, arriendoCuotaView, pagarCuotasView);
         new ArriendoCuotaController(arriendoCuotaView, pagarCuotasView, clienteView);
         new PagarCuotasController(pagarCuotasView);
 

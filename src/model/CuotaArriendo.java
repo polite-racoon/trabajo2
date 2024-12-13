@@ -5,10 +5,10 @@ public class CuotaArriendo {
     private double valorCuota;
     private boolean pagada;
 
-    public CuotaArriendo(int numCuota, double valorCuota, boolean pagada) {
+    public CuotaArriendo(int numCuota, double valorCuota) {
         this.numCuota = numCuota;
         this.valorCuota = valorCuota;
-        this.pagada = pagada;
+        this.pagada = false;
     }
 
     public int getNumCuota() {

@@ -121,16 +121,16 @@ public class ArriendoCuotaController {
         String fechaTexto = view.getTxtFechaArriendo().getText();
 
         // Validar que todos los campos estén completos
-        // if (Objects.equals(cedulaCliente, null) 
-        //     || Objects.equals(patenteVehiculo, null) 
-        //     || diasTexto.isEmpty() 
-        //     || cuotasTexto.isEmpty() 
-        //     || montoTexto.isEmpty()
-        //     || fechaTexto.isEmpty()) {
-        //     // Mostrar mensaje de error
-        //     JOptionPane.showMessageDialog(view, "Complete todos los campos.");
-        //     return;
-        // }
+        if (Objects.equals(cedulaCliente, null) 
+            || Objects.equals(patenteVehiculo, null) 
+            || diasTexto.isEmpty() 
+            || cuotasTexto.isEmpty() 
+            || montoTexto.isEmpty()
+            || fechaTexto.isEmpty()) {
+            // Mostrar mensaje de error
+            JOptionPane.showMessageDialog(view, "Complete todos los campos.");
+            return;
+        }
 
         int dias;
         int numCuotas;

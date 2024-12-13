@@ -43,10 +43,10 @@ public class ClienteController {
             return;
         }
 
-        // if (!isCedulaValid(cedula)) {
-        //     JOptionPane.showMessageDialog(view, "La cédula ingresada no es válida");
-        //     return;
-        // }
+        if (!isCedulaValid(cedula)) {
+            JOptionPane.showMessageDialog(view, "La cédula ingresada no es válida");
+            return;
+        }
 
         // Crear cliente y añadirlo a la lista de clientes
         Cliente cliente = new Cliente(cedula, nombre, vigente);

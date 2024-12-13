@@ -48,19 +48,19 @@ public class PagarCuotasController {
 
     private void mostrarPagos() {
         Arriendo arriendoSeleccionado = view.getLstArriendos().getSelectedValue(); // Selecciona el arriendo
-        System.out.println("Arriendo seleccionado: " + arriendoSeleccionado);
+        DefaultTableModel model = new DefaultTableModel(new String[]{"Número", "Valor", "Pagada"}, 0);
+        
         if (arriendoSeleccionado != null) {
             List<CuotaArriendo> cuotas = arriendoSeleccionado.getCuotas();
-            DefaultTableModel model = new DefaultTableModel(new String[]{"Número", "Valor", "Pagada"}, 0);
 
             for (CuotaArriendo cuota : cuotas) {
                 model.addRow(new Object[]{cuota.getNumCuota(), cuota.getValorCuota(), cuota.isPagada()});
             }
 
-            view.getTblCuotas().setModel(model);
         } else {
             // Mostrar mensaje de error si no se selecciona un arriendo
             JOptionPane.showMessageDialog(view, "Seleccione un arriendo para mostrar sus cuotas.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        view.getTblCuotas().setModel(model);
     }
 }

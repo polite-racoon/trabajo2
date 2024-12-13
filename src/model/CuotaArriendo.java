@@ -2,10 +2,10 @@ package model;
 
 public class CuotaArriendo {
     private int numCuota;
-    private double valorCuota;
+    private int valorCuota;
     private boolean pagada;
 
-    public CuotaArriendo(int numCuota, double valorCuota) {
+    public CuotaArriendo(int numCuota, int valorCuota) {
         this.numCuota = numCuota;
         this.valorCuota = valorCuota;
         this.pagada = false;
@@ -19,11 +19,11 @@ public class CuotaArriendo {
         this.numCuota = numCuota;
     }
 
-    public double getValorCuota() {
+    public int getValorCuota() {
         return valorCuota;
     }
 
-    public void setValorCuota(double valorCuota) {
+    public void setValorCuota(int valorCuota) {
         this.valorCuota = valorCuota;
     }
 

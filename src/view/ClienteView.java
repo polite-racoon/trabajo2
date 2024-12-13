@@ -25,10 +25,13 @@ public class ClienteView extends JFrame {
         // Componentes
         JLabel lblCedula = new JLabel("Cédula:");
         txtCedula = new JTextField();
+
         JLabel lblNombre = new JLabel("Nombre:");
         txtNombre = new JTextField();
+
         JLabel lblVigente = new JLabel("¿Vigente?");
         chkVigente = new JCheckBox();
+        
         btnAgregar = new JButton("Agregar");
 
         // Layout horizontal

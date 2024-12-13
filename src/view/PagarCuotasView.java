@@ -15,7 +15,7 @@ public class PagarCuotasView extends JFrame {
 
     public PagarCuotasView() {
         setTitle("Pagar Cuotas de Arriendos");
-        setSize(600, 400);
+        setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Panel principal
@@ -28,20 +28,23 @@ public class PagarCuotasView extends JFrame {
         // Componentes
         JLabel lblClientes = new JLabel("Cliente:");
         cmbClientes = new JComboBox<>();
+        cmbClientes.addItem(new ComboBoxItem("Seleccione un cliente", null));
 
         JLabel lblArriendos = new JLabel("Arriendos:");
         lstArriendos = new JList<>(new DefaultListModel<>());
-        lstArriendos.setVisibleRowCount(10);
+        lstArriendos.setVisibleRowCount(5);
 
         JLabel lblCuotas = new JLabel("Pagos:");
         tblCuotas = new JTable();
+        
         btnMostrarPagos = new JButton("Mostrar Pagos");
         btnRealizarPago = new JButton("Realizar Pago");
 
         JScrollPane scrollArriendos = new JScrollPane(lstArriendos);
-        scrollArriendos.setPreferredSize(new Dimension(400, 600));
+        scrollArriendos.setPreferredSize(new Dimension(400, 200));
 
         JScrollPane scrollCuotas = new JScrollPane(tblCuotas);
+        scrollCuotas.setPreferredSize(new Dimension(400, 200));
 
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()

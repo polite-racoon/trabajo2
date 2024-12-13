@@ -8,8 +8,6 @@ import view.Components.ComboBoxItem;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,53 +24,31 @@ public class PagarCuotasController {
         // Configurar modelo para el JList
         listModelArriendos = new DefaultListModel<>();
         view.getLstArriendos().setModel(listModelArriendos);
-
-        // Configurar selección simple en el JList
-        view.getLstArriendos().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        // agregar arriendos a la lista
-        view.getLstArriendos().setModel(listModelArriendos);
-
-
-        // Listener para el botón "Mostrar Pagos"
-        view.getBtnMostrarPagos().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostrarPagos();
-            }
-        });
+        view.getLstArriendos().setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // seleccion simple
 
         // Listener para seleccion de cliente en el combobox
-        view.getCmbClientes().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Seleccionando cliente...");
-                ComboBoxItem itemSeleccionado = (ComboBoxItem) view.getCmbClientes().getSelectedItem();
-                String cedulaCliente = itemSeleccionado.getValue();
-                
-                System.out.println("Data.arriendos: " + Data.arriendos.size());
-
-                List<Arriendo> arriendos = Data.arriendos.stream().filter(a->a.getCliente().getCedula() == cedulaCliente).collect(Collectors.toList());
-                cargarArriendos(arriendos);
-            }
-        });
+        view.getCmbClientes().addActionListener(e -> mostrarArriendos());
+    
+        // Listener para boton mostrar pagos
+        view.getBtnMostrarPagos().addActionListener(e -> mostrarPagos());
     }
 
-    
-
-    public void cargarArriendos(List<Arriendo> arriendos) {
-        System.out.println("Cargando arriendos..." + arriendos.size());
+    public void mostrarArriendos() {
+        ComboBoxItem itemSeleccionado = (ComboBoxItem) view.getCmbClientes().getSelectedItem();
+        String cedulaCliente = itemSeleccionado.getValue();
+                
+        List<Arriendo> arriendos = Data.arriendos.stream().filter(a->a.getCliente().getCedula() == cedulaCliente).collect(Collectors.toList());
+        
         listModelArriendos.clear(); // Limpia el modelo antes de agregar nuevos datos
         
         for (Arriendo arriendo : arriendos) {
             listModelArriendos.addElement(arriendo);
-            System.out.println("Arriendo en tercera ventana: " + arriendo);
         }
     }
 
     private void mostrarPagos() {
         Arriendo arriendoSeleccionado = view.getLstArriendos().getSelectedValue(); // Selecciona el arriendo
-
+        System.out.println("Arriendo seleccionado: " + arriendoSeleccionado);
         if (arriendoSeleccionado != null) {
             List<CuotaArriendo> cuotas = arriendoSeleccionado.getCuotas();
             DefaultTableModel model = new DefaultTableModel(new String[]{"Número", "Valor", "Pagada"}, 0);
@@ -83,7 +59,8 @@ public class PagarCuotasController {
 
             view.getTblCuotas().setModel(model);
         } else {
-            System.out.println("Seleccione un arriendo para mostrar sus cuotas.");
+            // Mostrar mensaje de error si no se selecciona un arriendo
+            JOptionPane.showMessageDialog(view, "Seleccione un arriendo para mostrar sus cuotas.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

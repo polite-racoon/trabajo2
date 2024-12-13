@@ -10,6 +10,9 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import model.Data;
+import model.Vehiculo;
+
 public class ArriendoCuotaController {
     private ArriendoCuotaView view;
     private PagarCuotasView pagarCuotasView;
@@ -48,39 +51,26 @@ public class ArriendoCuotaController {
     }
 
     private void cargarVehiculos() {
-        // Lista de vehículos sin precios en el texto
         view.getCmbVehiculos().addItem("Seleccione Vehículo");
-        view.getCmbVehiculos().addItem("Hyundai Accent");
-        view.getCmbVehiculos().addItem("Suzuki Swift");
-        view.getCmbVehiculos().addItem("Renault Clio");
-        view.getCmbVehiculos().addItem("Citroen C3");
-        view.getCmbVehiculos().addItem("Volkswagen T-Cross");
+        for (Vehiculo vehiculo : Data.vehiculos) {
+            view.getCmbVehiculos().addItem(vehiculo.getMarca() + " " + vehiculo.getModelo());   
+        }
     }
 
     private void actualizarPrecioPorDia() {
         String vehiculoSeleccionado = (String) view.getCmbVehiculos().getSelectedItem();
 
-        if (vehiculoSeleccionado != null) {
-            switch (vehiculoSeleccionado) {
-                case "Hyundai Accent":
-                    view.getTxtPrecioPorDia().setText("30000");
-                    break;
-                case "Suzuki Swift":
-                    view.getTxtPrecioPorDia().setText("35000");
-                    break;
-                case "Renault Clio":
-                    view.getTxtPrecioPorDia().setText("35000");
-                    break;
-                case "Citroen C3":
-                    view.getTxtPrecioPorDia().setText("40000");
-                    break;
-                case "Volkswagen T-Cross":
-                    view.getTxtPrecioPorDia().setText("45000");
-                    break;
-                default:
-                    view.getTxtPrecioPorDia().setText(""); // Vacío si no se selecciona vehículo
+            if (vehiculoSeleccionado.equals("Seleccione Vehículo")) {
+                view.getTxtPrecioPorDia().setText("");
+                return;
             }
-        }
+
+            for (Vehiculo vehiculo : Data.vehiculos) {
+                if ((vehiculo.getMarca() + " " + vehiculo.getModelo()).equals(vehiculoSeleccionado)) {
+                    view.getTxtPrecioPorDia().setText(String.valueOf(vehiculo.getPrecioPorDia()));
+                    break;
+                }
+            }
     }
 
     private void calcularMontoTotal() {

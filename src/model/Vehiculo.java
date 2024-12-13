@@ -1,24 +1,25 @@
 package model;
 
 public class Vehiculo {
-    private String matricula;
+    private String patente;
     private String marca;
     private String modelo;
     private int precioPorDia;
+    private char condicion = 'D'; // D = Disponible, A = Arrendado
 
-    public Vehiculo(String matricula, String marca, String modelo, int precioPorDia) {
-        this.matricula = matricula;
+    public Vehiculo(String patente, String marca, String modelo, int precioPorDia) {
+        this.patente = patente;
         this.marca = marca;
         this.modelo = modelo;
         this.precioPorDia = precioPorDia;
     }
 
-    public String getMatricula() {
-        return matricula;
+    public String getPatente() {
+        return patente;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setPatente(String patente) {
+        this.patente = patente;
     }
 
     public String getMarca() {
@@ -45,8 +46,16 @@ public class Vehiculo {
         this.precioPorDia = precioPorDia;
     }
 
+    public char getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(char condicion) {
+        this.condicion = condicion;
+    }
+
     @Override
     public String toString() {
-        return marca + " " + modelo + " (" + matricula + ") - $" + precioPorDia + "/día";
+        return marca + " " + modelo + " (" + condicion + ")";
     }
 }

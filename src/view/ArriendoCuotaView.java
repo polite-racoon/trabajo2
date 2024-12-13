@@ -1,11 +1,14 @@
 package view;
 
 import javax.swing.*;
+
+import view.Components.ComboBoxItem;
+
 import java.awt.*;
 
 public class ArriendoCuotaView extends JFrame {
-    private JComboBox<String> cmbClientes;
-    private JComboBox<String> cmbVehiculos;
+    private JComboBox<ComboBoxItem> cmbClientes;
+    private JComboBox<ComboBoxItem> cmbVehiculos;
     private JTextField txtPrecioPorDia;
     private JTextField txtFechaArriendo;
     private JTextField txtDias;
@@ -29,24 +32,34 @@ public class ArriendoCuotaView extends JFrame {
 
         // Componentes
         JLabel lblCliente = new JLabel("Cliente:");
+        
         cmbClientes = new JComboBox<>();
-        cmbClientes.addItem("Seleccione Cliente"); // Opción inicial
+        cmbClientes.addItem(new ComboBoxItem("Seleccione cliente", null));
+        
         JLabel lblVehiculo = new JLabel("Vehículo:");
         cmbVehiculos = new JComboBox<>();
-        cmbVehiculos.addItem("Seleccione Vehículo"); // Opción inicial
+        cmbVehiculos.addItem(new ComboBoxItem("Seleccione vehículo", null));
+
         JLabel lblPrecio = new JLabel("Precio por Día:");
+
         txtPrecioPorDia = new JTextField();
         txtPrecioPorDia.setEditable(false);
+
         JLabel lblFecha = new JLabel("Fecha de Arriendo (dd/MM/yyyy):");
         txtFechaArriendo = new JTextField();
+
         JLabel lblDias = new JLabel("Días:");
         txtDias = new JTextField();
+
         JLabel lblMonto = new JLabel("Monto Total:");
         txtMontoTotal = new JTextField();
         txtMontoTotal.setEditable(false);
+
         JLabel lblCuotas = new JLabel("Cantidad de Cuotas:");
         txtCantidadCuotas = new JTextField();
+
         btnIngresarCliente = new JButton("Ingresar Cliente");
+
         btnGuardarArriendo = new JButton("Guardar Arriendo y Mostrar Cuotas");
 
         // Layout horizontal
@@ -105,11 +118,11 @@ public class ArriendoCuotaView extends JFrame {
         add(panel, BorderLayout.CENTER);
     }
 
-    public JComboBox<String> getCmbClientes() {
+    public JComboBox<ComboBoxItem> getCmbClientes() {
         return cmbClientes;
     }
 
-    public JComboBox<String> getCmbVehiculos() {
+    public JComboBox<ComboBoxItem> getCmbVehiculos() {
         return cmbVehiculos;
     }
 

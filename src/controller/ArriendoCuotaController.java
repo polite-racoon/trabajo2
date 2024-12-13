@@ -1,25 +1,32 @@
 package controller;
 
-import view.ArriendoCuotaView;
-import view.PagarCuotasView;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+import java.util.Objects;
+
+import view.ArriendoCuotaView;
+import view.ClienteView;
+import view.PagarCuotasView;
+import view.Components.ComboBoxItem;
 
 import model.Data;
 import model.Vehiculo;
 
+
 public class ArriendoCuotaController {
     private ArriendoCuotaView view;
     private PagarCuotasView pagarCuotasView;
+    private ClienteView clienteView;
 
-    public ArriendoCuotaController(ArriendoCuotaView view, PagarCuotasView pagarCuotasView) {
+    public ArriendoCuotaController(ArriendoCuotaView view, PagarCuotasView pagarCuotasView, ClienteView clienteView) {
         this.view = view;
         this.pagarCuotasView = pagarCuotasView;
+        this.clienteView = clienteView;
         cargarVehiculos();
         initController();
     }
@@ -48,25 +55,37 @@ public class ArriendoCuotaController {
                 guardarArriendo();
             }
         });
+
+        //Listener botón "Ingresar Cliente"
+        view.getBtnIngresarCliente().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                view.setVisible(false);
+                // view.dispose();
+                clienteView.setVisible(true);
+            }
+        });
+
     }
 
     private void cargarVehiculos() {
-        view.getCmbVehiculos().addItem("Seleccione Vehículo");
         for (Vehiculo vehiculo : Data.vehiculos) {
-            view.getCmbVehiculos().addItem(vehiculo.getMarca() + " " + vehiculo.getModelo());   
+            String displayValue = vehiculo.toString();
+            view.getCmbVehiculos().addItem(new ComboBoxItem(displayValue, vehiculo.getPatente()));   
         }
     }
 
     private void actualizarPrecioPorDia() {
-        String vehiculoSeleccionado = (String) view.getCmbVehiculos().getSelectedItem();
+        ComboBoxItem itemSeleccionado = (ComboBoxItem) view.getCmbVehiculos().getSelectedItem();
+        
+        String patenteVehiculo = itemSeleccionado.getValue();
+        if (Objects.equals(patenteVehiculo, null)) {
+            view.getTxtPrecioPorDia().setText("");
+            return;
+        }
 
-            if (vehiculoSeleccionado.equals("Seleccione Vehículo")) {
-                view.getTxtPrecioPorDia().setText("");
-                return;
-            }
-
-            for (Vehiculo vehiculo : Data.vehiculos) {
-                if ((vehiculo.getMarca() + " " + vehiculo.getModelo()).equals(vehiculoSeleccionado)) {
+        for (Vehiculo vehiculo : Data.vehiculos) {
+            if ((vehiculo.getPatente()).equals(patenteVehiculo)) {
                     view.getTxtPrecioPorDia().setText(String.valueOf(vehiculo.getPrecioPorDia()));
                     break;
                 }
@@ -85,21 +104,29 @@ public class ArriendoCuotaController {
     }
 
     private void guardarArriendo() {
-        String clienteSeleccionado = (String) view.getCmbClientes().getSelectedItem();
-        String vehiculoSeleccionado = (String) view.getCmbVehiculos().getSelectedItem();
+        ComboBoxItem itemCliente = (ComboBoxItem) view.getCmbClientes().getSelectedItem();
+        ComboBoxItem itemVehiculo = (ComboBoxItem) view.getCmbVehiculos().getSelectedItem();
+
+        String cedulaCliente = itemCliente.getValue();
+        String patenteVehiculo = itemVehiculo.getValue();
+
         String diasTexto = view.getTxtDias().getText();
         String cuotasTexto = view.getTxtCantidadCuotas().getText();
         String montoTexto = view.getTxtMontoTotal().getText();
 
         // Validar que todos los campos estén completos
-        if (clienteSeleccionado.equals("Seleccione Cliente") || vehiculoSeleccionado.equals("Seleccione Vehículo")
-                || diasTexto.isEmpty() || cuotasTexto.isEmpty() || montoTexto.isEmpty()) {
-            System.out.println("Complete todos los campos.");
+        if (Objects.equals(cedulaCliente, null) 
+            || Objects.equals(patenteVehiculo, null) 
+            || diasTexto.isEmpty() 
+            || cuotasTexto.isEmpty() 
+            || montoTexto.isEmpty()) {
+            // Mostrar mensaje de error
+            JOptionPane.showMessageDialog(view, "Complete todos los campos.");
             return;
         }
 
-        System.out.println("Cliente: " + clienteSeleccionado);
-        System.out.println("Vehículo: " + vehiculoSeleccionado);
+        System.out.println("Cliente: " + cedulaCliente);
+        System.out.println("Vehículo: " + patenteVehiculo);
         System.out.println("Monto Total: " + montoTexto);
         System.out.println("Cantidad de Cuotas: " + cuotasTexto);
 

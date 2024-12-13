@@ -3,6 +3,7 @@ package controller;
 import model.Cliente;
 import model.Data;
 import view.ClienteView;
+import view.Components.ComboBoxItem;
 import view.ArriendoCuotaView;
 
 import java.awt.event.ActionEvent;
@@ -53,7 +54,9 @@ public class ClienteController {
         limpiarCampos();
 
         // Añadir cliente al JComboBox en ArriendoCuotaView
-        arriendoCuotaView.getCmbClientes().addItem(cliente.getNombre());
+        String vigencia = cliente.isVigente() ? "" : " (No Vigente)";
+        String displayValue = cliente.getNombre() + vigencia;
+        arriendoCuotaView.getCmbClientes().addItem(new ComboBoxItem(displayValue, cedula));
 
         // Cerrar ClienteView y abrir ArriendoCuotaView
         view.setVisible(false);

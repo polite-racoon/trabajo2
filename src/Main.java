@@ -19,7 +19,7 @@ public class Main {
         // Crear controladores
         new ClienteController(clienteView, arriendoCuotaView, pagarCuotasView);
         new ArriendoCuotaController(arriendoCuotaView, pagarCuotasView, clienteView);
-        new PagarCuotasController(pagarCuotasView);
+        new PagarCuotasController(pagarCuotasView, arriendoCuotaView);
 
         clienteView.setVisible(true);
     }

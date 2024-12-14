@@ -10,6 +10,7 @@ public class PagarCuotasView extends JFrame {
     private JComboBox<ComboBoxItem> cmbClientes;
     private JList<Arriendo> lstArriendos; // Asegúrate de que el JList es de tipo Arriendo
     private JTable tblCuotas;
+    private JButton btnVolver;
     private JButton btnMostrarPagos;
     private JButton btnRealizarPago;
 
@@ -37,6 +38,7 @@ public class PagarCuotasView extends JFrame {
         JLabel lblCuotas = new JLabel("Pagos:");
         tblCuotas = new JTable();
         
+        btnVolver = new JButton("Volver");
         btnMostrarPagos = new JButton("Mostrar Pagos");
         btnRealizarPago = new JButton("Realizar Pago");
 
@@ -57,6 +59,7 @@ public class PagarCuotasView extends JFrame {
                                 .addComponent(scrollArriendos)
                                 .addComponent(scrollCuotas)
                                 .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnVolver)
                                         .addComponent(btnMostrarPagos)
                                         .addComponent(btnRealizarPago)))
         );
@@ -73,6 +76,7 @@ public class PagarCuotasView extends JFrame {
                                 .addComponent(lblCuotas)
                                 .addComponent(scrollCuotas))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnVolver)
                                 .addComponent(btnMostrarPagos)
                                 .addComponent(btnRealizarPago))
         );
@@ -92,6 +96,10 @@ public class PagarCuotasView extends JFrame {
         return tblCuotas;
     }
 
+    public JButton getBtnVolver() {
+        return btnVolver;
+    }
+    
     public JButton getBtnMostrarPagos() {
         return btnMostrarPagos;
     }

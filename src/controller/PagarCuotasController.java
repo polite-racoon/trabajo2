@@ -3,6 +3,7 @@ package controller;
 import model.Arriendo;
 import model.CuotaArriendo;
 import model.Data;
+import view.ArriendoCuotaView;
 import view.PagarCuotasView;
 import view.Components.ComboBoxItem;
 
@@ -13,10 +14,12 @@ import java.util.stream.Collectors;
 
 public class PagarCuotasController {
     private PagarCuotasView view;
+    private ArriendoCuotaView arriendoCuotaView;
     private DefaultListModel<Arriendo> listModelArriendos;
 
-    public PagarCuotasController(PagarCuotasView view) {
+    public PagarCuotasController(PagarCuotasView view, ArriendoCuotaView arriendoCuotaView) {
         this.view = view;
+        this.arriendoCuotaView = arriendoCuotaView;
         initController();
     }
 
@@ -26,6 +29,9 @@ public class PagarCuotasController {
         view.getLstArriendos().setModel(listModelArriendos);
         view.getLstArriendos().setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // seleccion simple
 
+        // Listener para boton volver
+        view.getBtnVolver().addActionListener(e -> volver());
+
         // Listener para seleccion de cliente en el combobox
         view.getCmbClientes().addActionListener(e -> mostrarArriendos());
     
@@ -33,6 +39,14 @@ public class PagarCuotasController {
         view.getBtnMostrarPagos().addActionListener(e -> mostrarPagos());
     }
 
+    public void volver() {
+        view.setVisible(false);
+        arriendoCuotaView.setVisible(true);
+        listModelArriendos.clear();
+        // Limpiar tabla de cuotas
+        view.getTblCuotas().setModel(new DefaultTableModel(new String[]{"Número", "Valor", "Pagada"}, 0));
+    }
+    
     public void mostrarArriendos() {
         ComboBoxItem itemSeleccionado = (ComboBoxItem) view.getCmbClientes().getSelectedItem();
         String cedulaCliente = itemSeleccionado.getValue();

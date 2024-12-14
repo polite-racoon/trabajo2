@@ -48,6 +48,13 @@ public class ClienteController {
             return;
         }
 
+        for (Cliente cliente : Data.clientes) {
+            if (cliente.getCedula().equals(cedula)) {
+                JOptionPane.showMessageDialog(view, "Ya existe un cliente con la misma cédula");
+                return;
+            }
+        }
+
         // Crear cliente y añadirlo a la lista de clientes
         Cliente cliente = new Cliente(cedula, nombre, vigente);
         Data.clientes.add(cliente);

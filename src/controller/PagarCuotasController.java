@@ -28,25 +28,20 @@ public class PagarCuotasController {
         listModelArriendos = new DefaultListModel<>();
         view.getLstArriendos().setModel(listModelArriendos);
         view.getLstArriendos().setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // seleccion simple
-
+        
+        // Listener para seleccion de cliente en el combobox
+        view.getCmbClientes().addActionListener(e -> mostrarArriendos());
+        
         // Listener para boton volver
         view.getBtnVolver().addActionListener(e -> volver());
 
-        // Listener para seleccion de cliente en el combobox
-        view.getCmbClientes().addActionListener(e -> mostrarArriendos());
-    
         // Listener para boton mostrar pagos
         view.getBtnMostrarPagos().addActionListener(e -> mostrarPagos());
+
+        // Listener para boton pagar cuota
+        view.getBtnRealizarPago().addActionListener(e -> pagarCuota());
     }
 
-    public void volver() {
-        view.setVisible(false);
-        arriendoCuotaView.setVisible(true);
-        listModelArriendos.clear();
-        // Limpiar tabla de cuotas
-        view.getTblCuotas().setModel(new DefaultTableModel(new String[]{"Número", "Valor", "Pagada"}, 0));
-    }
-    
     public void mostrarArriendos() {
         ComboBoxItem itemSeleccionado = (ComboBoxItem) view.getCmbClientes().getSelectedItem();
         String cedulaCliente = itemSeleccionado.getValue();
@@ -59,7 +54,15 @@ public class PagarCuotasController {
             listModelArriendos.addElement(arriendo);
         }
     }
-
+    
+    public void volver() {
+        view.setVisible(false);
+        arriendoCuotaView.setVisible(true);
+        listModelArriendos.clear();
+        // Limpiar tabla de cuotas
+        view.getTblCuotas().setModel(new DefaultTableModel(new String[]{"Número", "Valor", "Pagada"}, 0));
+    }
+    
     private void mostrarPagos() {
         Arriendo arriendoSeleccionado = view.getLstArriendos().getSelectedValue(); // Selecciona el arriendo
         DefaultTableModel model = new DefaultTableModel(new String[]{"Número", "Valor", "Pagada"}, 0);
@@ -76,5 +79,36 @@ public class PagarCuotasController {
             JOptionPane.showMessageDialog(view, "Seleccione un arriendo para mostrar sus cuotas.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         view.getTblCuotas().setModel(model);
+    }
+
+    private void pagarCuota() {
+
+        Arriendo arriendoSeleccionado = view.getLstArriendos().getSelectedValue();
+        if (arriendoSeleccionado == null) {
+            JOptionPane.showMessageDialog(view, "Seleccione un arriendo para pagar sus cuotas.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int selectedRow = view.getTblCuotas().getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(view, "Seleccione una cuota para pagar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        CuotaArriendo cuotaSeleccionada = arriendoSeleccionado.getCuotas().get(selectedRow);
+        if (cuotaSeleccionada == null) {
+            JOptionPane.showMessageDialog(view, "La cuota no corresponde al arriendo seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (cuotaSeleccionada.isPagada()) {
+            JOptionPane.showMessageDialog(view, "La cuota seleccionada ya ha sido pagada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        cuotaSeleccionada.setPagada(true);
+        JOptionPane.showMessageDialog(view, "Cuota pagada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                
+        mostrarPagos();
     }
 }

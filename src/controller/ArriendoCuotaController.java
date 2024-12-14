@@ -65,8 +65,8 @@ public class ArriendoCuotaController {
         view.getBtnIngresarCliente().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                limpiarCampos();
                 view.setVisible(false);
-                // view.dispose();
                 clienteView.setVisible(true);
             }
         });
@@ -192,7 +192,18 @@ public class ArriendoCuotaController {
         Data.arriendos.add(arriendo);
 
         // Avanzar a la interfaz PagarCuotasView
+        limpiarCampos();
         view.setVisible(false);
         pagarCuotasView.setVisible(true);
     }
+
+    private void limpiarCampos() {
+        view.getTxtDias().setText("");
+        view.getTxtCantidadCuotas().setText("");
+        view.getTxtMontoTotal().setText("");
+        view.getTxtFechaArriendo().setText("");
+        view.getTxtPrecioPorDia().setText("");
+        view.getCmbClientes().setSelectedIndex(0);
+        view.getCmbVehiculos().setSelectedIndex(0);
+    }   
 }
